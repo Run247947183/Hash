@@ -1,0 +1,28 @@
+class Solution {
+    public boolean isHappy(int n) {
+        Set<Integer> set = new HashSet<>();
+        while (n != 1) {
+            n = helper(n);
+            if (set.contains(n)) {
+                // 如果这个数已经存在于 set 中
+                // 那么表示已经进入无线循环
+                return false;
+            } else {
+                set.add(n);
+            }
+        } 
+        return true;
+    }
+    private int  helper(int n) {
+        int sum = 0;
+        while (n > 0) {
+            // 将 n 的个位数取出
+            int num = n % 10;
+            // 将 num 平方加给 sum
+            sum += num * num;
+            // 将 n 除去已经取出的数
+            n = n / 10;
+        }
+        return sum;
+    }
+}
