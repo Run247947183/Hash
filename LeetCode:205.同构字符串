@@ -1,0 +1,26 @@
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        // 利用 HashMap 中的 key-value 来解决
+        HashMap<Character, Character> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++){
+            if (!map.containsKey(s.charAt(i))) {
+                if (map.containsValue(t.charAt(i))) {
+                    return false;
+                }
+                // 如果当前 i 下字符串s和t中的字符都不存在
+                // 那么就把这个 key-value 加入到 map 中
+                map.put(s.charAt(i), t.charAt(i));
+            } else {
+                // 如果当前 i 下，该字符存在在 map 中
+                // 那么判断在map中s字符串的该字符所对应的 value 是否和 t 字符串中的该字符相等
+                if (map.get(s.charAt(i)) != t.charAt(i)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
