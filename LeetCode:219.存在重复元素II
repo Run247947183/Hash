@@ -1,0 +1,25 @@
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        if (k < 1 || nums.length < 2) {
+            return false;
+        }
+        Map<Integer, Integer> hashmap = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            // 不存在，那么直接加入 hashmap 之中
+            if (!hashmap.containsKey(nums[i])) {
+                hashmap.put(nums[i], i);
+            } else {
+                int index = hashmap.get(nums[i]);
+                // 因为之前要是存在nums[i],那么index就会比此时的i小
+                // 所以这里 index - i 需要取绝对值来和 k 进行比较
+                if (Math.abs(index - i) <= k) {
+                    return true;
+                }
+                // 此时说明index - i 大于 k
+                // 所以需要将此处的key-value也加入到hashmap中
+                hashmap.put(nums[i], i);
+            }
+        }
+        return false;
+    }
+}
