@@ -1,0 +1,33 @@
+class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        char[] array = pattern.toCharArray();
+        // 将 str 中的字符按空格分隔开来，以便后面进行取操作
+        String[] str2 = str.split(" ");
+        if (pattern == null || str == null || 
+            array.length != str2.length) {
+            return false
+        }
+        Map<Character, String> map = new HashMap<>();
+        for (int i = 0; i < array.length; i++) {
+            char temp = array[i];
+            // 第一种 false 情况: key 已经存在
+            if (map.containsKey(temp)) {
+                // 但是 key 对应的 value 和 数组 str2 中对应的字符串不一样
+                if (!map.get(temp).equals(str2[i])) {
+                    return false;
+                }
+            } else {
+                // 第二种 false 情况:
+                // key 不存在并且 map中存在 key 对应 str2 中的字符串已经存在
+                if (map.containsValue(str2[i])) {
+                    return false;
+                } else {
+                    // false 的情况都不满足则，将此键值对加入 map
+                    map.put(temp, str2[i]);
+                }
+            }
+        }
+        // 经过遍历都没有出现 false 则为 true
+        return true;
+    }
+}
