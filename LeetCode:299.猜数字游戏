@@ -1,0 +1,35 @@
+class Solution {
+    public String getHint(String secret, String guess) {
+        // 将两个字符串转化成字符数组 array1 和 array2
+        char[] array1 = secret.toCharArray();
+        char[] array2 = guess.toCharArray();
+        Map<Character, Integer> map = new HashMap<>();
+        // A 用来记录公牛的数量
+        int A = 0;
+        for (int i = 0; i < array1.length; i++) {
+            if (array1[i] == array2[i]) {
+                A++;
+            }
+        }
+        // 将公牛的字符全部加入 map 之中
+        for (int j = 0; j < array1.length; j++) {
+            if (!map.containsKey(array1[j])) {
+                map.put(array1[j], 1);
+            } else {
+                map.put(array1[j], map.get(array1[j]) + 1);
+            }
+        }
+        // B 用来记录奶牛的数量
+        int B = 0;
+        // 将奶牛的字符与 map 之中的字符进行比较
+        // 如果相同则 B++,再将更新 map
+        for (int k = 0; k < array2.length; k++) {
+            Integer count = map.get(array2[k]);
+            if (map.containsKey(array2[k]) && count - 1 >= 0) {
+                map.put(array2[k], count - 1);
+                B++;
+            }
+        }
+        return A + "A" + (B - A) + "B";
+    }
+}
