@@ -1,0 +1,29 @@
+class Solution {
+    public int longestPalindrome(String s) {
+        // 将字符串转换成为字符数组
+        char[] array = s.toCharArray();
+        // set 只用来保存数组中单个存在的字符
+        Set<Character> set = new HashSet<>();
+        for (int i = 0; i < array.length; i++) {
+            // 如果 set 中存在 array[i], 则直接将该字符删除
+            // 相当于数组中重复的偶数个字符不会在 set 中存在
+            if (set.contains(array[i])) {
+                set.remove(array[i]);
+                continue;
+            }
+            set.add(array[i]);
+        }
+        // 数组的元素个数减去 set 的长度表示数组中以偶数长度存在的字符
+        int result = array.length - set.size();
+        // 这个 if 表示数组只有偶数长度的字符存在，并且这些字符相同
+        if (array.length % 2 == 0 && set.size() == 0) {
+            return array.length;
+        }
+        // 如果 result 为 偶数，则要加一个单独存在的字符来构成最长的回文字符串
+        if (result % 2 == 0) {
+            return result + 1;
+        }
+        // 否则已经构成最长回文字符串
+        return result;
+    }
+}
