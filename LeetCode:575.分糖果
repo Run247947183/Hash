@@ -1,0 +1,11 @@
+class Solution {
+    public int distributeCandies(int[] candies) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < candies.length; i++) {
+            set.add(candies[i]);
+        }
+        int countNum = set.size();
+        int midArrayNum = candies.length / 2;
+        return countNum >= midArrayNum ? midArrayNum : countNum;
+    }
+}
