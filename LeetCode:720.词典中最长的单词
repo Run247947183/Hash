@@ -1,0 +1,19 @@
+class Solution {
+    public String longestWord(String[] words) {
+        // 将 words 中的字符串按照字典序排好
+        // 这样也有利于处理后面出现两个字符串长度相同的情况
+        Arrays.sort(words);
+        // 因为 Set 不会添加相同的字符串
+        Set<String> set = new HashSet<>();
+        String res = "";
+        for (String s : words) {
+            if (s.length() == 1 || set.contains
+                    (s.substring(0, s.length()-1))) {
+                        // 注意：如果 res 和 s 长度相同也是返回 res
+                        res = s.length() > res.length() ? s : res;
+                        set.add(s);   
+                    }
+        }
+        return res;
+    }
+}
