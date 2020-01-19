@@ -1,0 +1,62 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.*;
+class Solution {
+    public String shortestCompletingWord(String licensePlate, String[] words) {
+        Map<Character, Integer> map1 = new HashMap<>();
+        Map<Character, Integer> map2 = new HashMap<>();
+        char[] chars = licensePlate.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] >= 'A' && chars[i] <= 'Z') {
+                chars[i] = (char)(chars[i] + 32);
+            }
+            if (chars[i] >= 'a' && chars[i] <= 'z') {
+                map1.put(chars[i],map1.getOrDefault(chars[i],0)+1);
+            }
+        }
+        String res = null;
+        for (int j = 0; j < words.length; j++) {
+            String str = words[j];
+            map2 = deepClone(map1);
+            char[] word = str.toCharArray();
+            for (int k = 0; k < word.length; k++) {
+                if (map2.containsKey(word[k])) {
+                    map2.put(word[k], map2.get(word[k]) - 1);
+                    if (map2.get(word[k]) == 0) {
+                        map2.remove(word[k]);
+                    }
+                }
+            }
+            if (map2.size() == 0) {
+                if (res == null) {
+                    res = str;
+                } else {
+                    res = res.length() > str.length() ? str : res;
+                }
+            }
+        }
+        return res;
+    }
+    public static <T> Map deepClone(Map obj){
+        T clonedObj = null;
+        try {
+            ByteArrayOutputStream baos = 
+                    new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(obj);
+            oos.close();
+
+            ByteArrayInputStream bais = 
+                    new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            clonedObj = (T) ois.readObject();
+            ois.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return (Map) clonedObj;
+    }
+}
