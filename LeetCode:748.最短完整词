@@ -8,7 +8,9 @@ class Solution {
         Map<Character, Integer> map1 = new HashMap<>();
         Map<Character, Integer> map2 = new HashMap<>();
         char[] chars = licensePlate.toCharArray();
+        // 将 licensePlate 中的字母转成小写字母然后加入 map1 之中
         for (int i = 0; i < chars.length; i++) {
+            // 将大写字母转换成小写字母
             if (chars[i] >= 'A' && chars[i] <= 'Z') {
                 chars[i] = (char)(chars[i] + 32);
             }
@@ -16,29 +18,41 @@ class Solution {
                 map1.put(chars[i],map1.getOrDefault(chars[i],0)+1);
             }
         }
+        // res 是用来保存最后的结果
         String res = null;
         for (int j = 0; j < words.length; j++) {
+            // 进入 words 开始进行筛选和比较
             String str = words[j];
+            // 特别注意此处，map2 是深拷贝 map1
+            // 目的是为了筛选 words 中每个单词是否符合条件
             map2 = deepClone(map1);
             char[] word = str.toCharArray();
             for (int k = 0; k < word.length; k++) {
                 if (map2.containsKey(word[k])) {
+                    // 如果包含有 map1 中的某个字母
+                    // 就对该字母进行 -1 操作
                     map2.put(word[k], map2.get(word[k]) - 1);
+                    // 如果某个键值为 0 则删除该键值对
+                    // 以便后面 map2.size() == 0 判断
                     if (map2.get(word[k]) == 0) {
                         map2.remove(word[k]);
                     }
                 }
             }
+            // 如果最后循环结束，map2 为 0 说明该单词满足条件
             if (map2.size() == 0) {
                 if (res == null) {
                     res = str;
                 } else {
+                    // 如果满足条件的单词长度比原先 res 的单词长度小
+                    // 那么 res 就为该单词
                     res = res.length() > str.length() ? str : res;
                 }
             }
         }
         return res;
     }
+    // 深拷贝的函数
     public static <T> Map deepClone(Map obj){
         T clonedObj = null;
         try {
