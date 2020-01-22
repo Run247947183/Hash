@@ -1,0 +1,32 @@
+class Solution {
+    public List<String> subdomainVisits(String[] cpdomains) {
+        List<String> list = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        for (String str : cpdomains) {
+            // 将字符串前面的访问数量和域名分离
+            String[] s = str.split(" ");
+            // 将域名按照 . 分割开来
+            String[] x = s[1].split("\\."); // 注意此处需要转义
+            StringBuilder sb = new StringBuilder();
+            // 依次从后面将分割开来的子域名加入 sb 中
+            // 并且将对应访问的数量加入到 map 之中
+            for (int i = x.length - 1; i >= 0; i--) {
+                if (i == x.length - 1) {
+                    sb.insert(0, x[i]);
+                } else {
+                    sb.insert(0, ".");
+                    sb.insert(0, x[i]);
+                }
+                String x2 = sb.toString();
+                map.put(x2, map.getOrDefault(x2, 0)
+                + Integer.valueOf(s[0]));
+            }
+        }
+        // 将 map 中的子域名的访问数量加上空格再加上子域名
+        // 加入 list 之中
+        for (String s2 : map.keySet()) {
+            list.add(map.get(s2) + " " + s2);
+        }
+        return list;
+    }
+}
