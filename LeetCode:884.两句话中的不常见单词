@@ -1,0 +1,41 @@
+class Solution {
+    public String[] uncommonFromSentences(String A, String B) {
+        Map<String, Integer> map1 = new HashMap<>();
+        Map<String, Integer> map2 = new HashMap<>();
+        // 风别将两句话中的单词以及出现次数加入 map1 和 map2 之中
+        for (String s : A.split(" ")) {
+            map1.put(s, map1.getOrDefault(s, 0) + 1);
+        }
+        for (String s2 : B.split(" ")) {
+            map2.put(s2, map2.getOrDefault(s2, 0) + 1);
+        }
+        // sb 字符串保存的是两句话所有的单词
+        StringBuilder sb = new StringBuilder(A);
+        sb.append(" " + B);
+        String[] tmp = sb.toString().split(" ");
+        // res 用来保存符合题目要求的单词
+        StringBuilder res = new StringBuilder();
+        int count = 0;
+        for (String str : tmp) {
+            if (map1.containsKey(str)) {
+                if (map1.get(str)==1&&(!map2.containsKey(str))) {
+                    res.append(str + " ");
+                    count++;
+                }
+            } else {
+                if (map2.containsKey(str)) {
+                    if (map2.get(str) == 1) {
+                        res.append(str + " ");
+                        count++;
+                    }
+                }
+            }
+        }
+        // count 为 0 说明两句话中都没有符合不常见单词要求的单词
+        if (count == 0) {
+            // 那么就返回空字符串数组
+            return new String[0];
+        }
+        return res.toString().split(" ");
+    }
+}
