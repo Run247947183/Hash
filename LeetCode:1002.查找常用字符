@@ -1,0 +1,36 @@
+class Solution {
+    public List<String> commonChars(String[] A) {
+        List<String> list = new ArrayList<>();
+        // 利用26容量的整数数组来存取字符串的字母
+        int[] num = new int[26];
+        for (char c : A[0].toCharArray()) {
+            // 先保存第一个字符串的字母下标
+            // 该字母减去 'a' 就是对应的字母下标
+            // 例如'b'-'a'==1表示 'b' 在整数数组的出现位置为 num[1]
+            num[c - 'a']++;
+        }
+        for (int i = 1; i < A.length; i++) {
+            // 和上面整数数组一样，保存A[i]的字母下标
+            int[] tmp = new int[26];
+            for (char x : A[i].toCharArray()) {
+                tmp[x - 'a']++;
+            }
+            // 进行筛选，将两个数组下标下最小值赋值给 num 数组
+            // 该操作表示所有字符串中都有出现的字母的最小次数
+            for (int j = 0; j < 26; j++) {
+                num[j] = Math.min(num[j], tmp[j]);
+            }
+        }
+        // 最后将 num 数组的每个下标下的字母数量添加到 list 之中
+        // 例如 num[2] = 2，表述所有字符串中 'c' 字母出现的公共次数为2
+        // 就往 list 中添加 2 个 'c'
+        for (int i = 0; i < 26; i++) {
+            if (num[i] > 0) {
+                for (int j = 0; j < num[i]; j++) {
+                    list.add(((char)('a' + i) + ""));
+                }
+            }
+        }
+        return list;
+    }
+}
