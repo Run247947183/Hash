@@ -1,0 +1,22 @@
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : arr) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        Set<Integer> set = new HashSet<>();
+        for (int num2 : arr) {
+            set.add(num2);
+        }
+        Iterator<Integer> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            int tmp = iterator.next();
+            int num = map.get(tmp);
+            map.remove(tmp);
+            if (map.containsValue(num)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
